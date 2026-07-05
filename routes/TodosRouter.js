@@ -55,39 +55,48 @@ const todos = [
   },
 ];
 
+
+router.get("/error", (req, res) => {
+  throw new Error("Test Error Middleware");
+});
+
+
 router.get("/", (req, res) => {
 
-const pages = Number(req.query.page)
-const limit = 5
-const result = todos.slice((pages - 1) * limit, pages * limit)
-if(!pages){
+  const pages = Number(req.query.page)
+  const limit = 5
+  const result = todos.slice((pages - 1) * limit, pages * limit)
+  if (!pages) {
     res.json(todos)
-}else{
+  } else {
     res.json(result)
-}
+  }
 
 })
 
 router.get("/:id", (req, res) => {
 
-    const id = +req.params.id
+  const id = +req.params.id
 
-    res.json(todos.find(todo => todo.id === id))
+  res.json(todos.find(todo => todo.id === id))
 })
-
-
 
 
 router.post("/", (req, res) => {
-    res.send("Todo created!")
+const {title} = req.body
+  console.log(req.body)
+if(!title){
+  return res.status(400).json({ message: 'Title is required' })
+}
+  res.json(req.body)
 })
 
 router.put("/:id", (req, res) => {
-    res.send("Todo updated!")
+  res.send("Todo updated!")
 })
 
 router.delete("/:id", (req, res) => {
-    res.send("Todo deleted!")
+  res.send("Todo deleted!")
 })
 
 
